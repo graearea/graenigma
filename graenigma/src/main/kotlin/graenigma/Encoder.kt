@@ -16,8 +16,8 @@ class Encoder {
 }
 
 sealed class Programme {
-    val rotor1 =   "DMTWSILRUYQNKFEJCAZBPGXOHV"
-    val straight = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    val enigmaRotor =   Rotor("DMTWSILRUYQNKFEJCAZBPGXOHV")
+    val straight = Rotor("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
     abstract fun encode(input: Char): Char
     abstract fun decode(input: Char): Char
@@ -31,13 +31,29 @@ sealed class Programme {
     class SingleRotor() : Programme() {
         var offset=0
         override fun encode(input: Char): Char {
-                return rotor1[(input.toUpperCase().toInt() - 'A'.toInt()+(offset++))%26]
+                return enigmaRotor.wiring[(input.toUpperCase().toInt() - 'A'.toInt()+(offset++))%26]
         }
 
         override fun decode(input: Char): Char {
             offset=offset%26
-            return (rotor1.indexOf(input.toUpperCase())+'A'.toInt()-(offset++)).toChar()
+            val thing= (enigmaRotor.wiring.indexOf(input.toUpperCase())-(offset++)+26)%26
+            return ('A'.toInt()+thing).toChar()
         }
     }
 
+
+    class DoubleRotor(val rotor1: Rotor,val rotor2 : Rotor) : Programme() {
+        var offset=0
+        override fun encode(input: Char): Char {
+            val firstEncode = rotor1.wiring[(input.toUpperCase().toInt() - 'A'.toInt() + (offset++)) % 26]
+            return rotor2.wiring[(firstEncode.toInt() - 'A'.toInt() + (offset++)) % 26]
+        }
+
+        override fun decode(input: Char): Char {
+            offset=offset%26
+            val interim = (rotor1.wiring.indexOf(input.toUpperCase())+'A'.toInt()-(offset++)).toChar()
+            return  (rotor2.wiring.indexOf(interim)+'A'.toInt()-(offset++)).toChar()
+        }
+    }
+data class Rotor(val wiring:String)
 }

@@ -51,5 +51,6 @@ internal class RotorTest {
         assertEquals('A',enigma.decode('M'))
         assertEquals('A',enigma.decode('T'))
     }
+
 }
 
