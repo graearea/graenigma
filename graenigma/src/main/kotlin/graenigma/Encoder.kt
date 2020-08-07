@@ -6,13 +6,6 @@ class Encoder{
     private var loadedProgramme: Programme? = null
 
     fun encode(input: String):String = loadedProgramme?.run { encode(input) } ?: throw RuntimeException("No Programme Loaded")
-//
-//        return when (loadedProgramme) {
-//            null -> throw RuntimeException("No Program Loaded!")
-//            else -> loadedProgramme!!.encode(input)
-//        }
-//
-//    }
     fun load(prog:Programme) {
         loadedProgramme=prog
     }
