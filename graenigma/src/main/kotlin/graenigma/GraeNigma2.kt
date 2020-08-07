@@ -15,15 +15,15 @@ import javax.swing.text.AbstractDocument
 import javax.swing.text.AttributeSet
 import javax.swing.text.DocumentFilter
 
-enum class Mode{ENCODE,DECODE}
+enum class Mode { ENCODE, DECODE }
 
 fun main() {
     val encoder = GraeNigma(Mode.ENCODE)
     encoder.isVisible = true
-    encoder.bounds=Rectangle(500, 100, 500, 600)
+    encoder.bounds = Rectangle(500, 100, 500, 600)
     val decoder = GraeNigma(Mode.DECODE)
     decoder.isVisible = true
-    decoder.bounds=Rectangle(500, 800, 500, 600)
+    decoder.bounds = Rectangle(500, 800, 500, 600)
 }
 
 class GraeNigma(mode: Mode) : JFrame() {
@@ -41,27 +41,27 @@ class GraeNigma(mode: Mode) : JFrame() {
 
         var input = JTextArea()
         (input.document as AbstractDocument).setDocumentFilter(MyFilter())
-        input.lineWrap=true
+        input.lineWrap = true
         val inputPane = JScrollPane(input)
         inputPane.bounds = Rectangle(50, 20, 400, 120)
 
         val output = JTextArea()
-        output.lineWrap=true
+        output.lineWrap = true
         val outputPane = JScrollPane(output)
         outputPane.bounds = Rectangle(50, 400, 400, 120)
 
-        val top = sequenceOf('Q','W','E','R','T','Y','U','I','O','P')
-        val mid = sequenceOf('A','S','D','F','G','H','J','K','L')
-        val bot = sequenceOf('Z','X','C','V','B','N','M')
+        val top = sequenceOf('Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P')
+        val mid = sequenceOf('A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L')
+        val bot = sequenceOf('Z', 'X', 'C', 'V', 'B', 'N', 'M')
 
-        val buttons= listOf(top,mid,bot)
+        val buttons = listOf(top, mid, bot)
 
-        val buttonToText= mutableMapOf<Char,JTextField>()
+        val buttonToText = mutableMapOf<Char, JTextField>()
 
-        buttons.forEachIndexed { row_idx, row->
+        buttons.forEachIndexed { row_idx, row ->
             row.forEachIndexed { idx, it ->
                 val bob = JTextField(it.toString())
-                bob.setBounds(Rectangle(idx * 22 + 150 +row_idx*10, 200 + (row_idx*40), 22, 20))
+                bob.setBounds(Rectangle(idx * 22 + 150 + row_idx * 10, 200 + (row_idx * 40), 22, 20))
                 this.contentPane.add(bob, BorderLayout.CENTER)
                 buttonToText.put(it, bob)
             }
@@ -70,10 +70,13 @@ class GraeNigma(mode: Mode) : JFrame() {
 
         val inputChangedListener = object : KeyListener {
             override fun keyTyped(e: KeyEvent) {
-                buttonToText.values.forEach { it.background=Color.WHITE }
+                buttonToText.values.forEach { it.background = Color.WHITE }
                 if (('A'.toInt()..'Z'.toInt()).contains(e.keyChar.toUpperCase().toInt())) {
-                    val encoded = encoder.encode(e.keyChar.toUpperCase())
-                    buttonToText[encoded]!!.background= Color.RED
+                    val encoded = if (mode == Mode.ENCODE)
+                        encoder.encode(e.keyChar.toUpperCase())
+                    else
+                        encoder.decode(e.keyChar.toUpperCase())
+                    buttonToText[encoded]!!.background = Color.RED
                     output.text = output.text + encoded
                 }
             }

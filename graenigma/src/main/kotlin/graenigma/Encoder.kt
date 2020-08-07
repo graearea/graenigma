@@ -16,7 +16,7 @@ class Encoder {
 }
 
 sealed class Programme {
-    val rotor1 = "DMTWSILRUYQNKFEJCAZBPGXOHV"
+    val rotor1 =   "DMTWSILRUYQNKFEJCAZBPGXOHV"
     val straight = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     abstract fun encode(input: Char): Char
@@ -35,19 +35,8 @@ sealed class Programme {
         }
 
         override fun decode(input: Char): Char {
+            offset=offset%26
             return (rotor1.indexOf(input.toUpperCase())+'A'.toInt()-(offset++)).toChar()
-        }
-    }
-
-
-    class DoubleRotor() : Programme() {
-        var offset=0
-        override fun encode(input: Char): Char {
-                return rotor1[(input.toUpperCase().toInt() - 'A'.toInt()+(offset++))%26]
-        }
-
-        override fun decode(input: Char): Char {
-            return (rotor1.indexOf(input.toUpperCase())+'A'.toInt()-(offset++)%26).toChar()
         }
     }
 
