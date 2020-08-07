@@ -13,15 +13,23 @@ class Encoder {
 }
 
 sealed class Programme {
+    val rotor1 = "DMTWSILRUYQNKFEJCAZBPGXOHV"
     abstract fun encode(input: Char): Char
     class TypeWriter : Programme() {
         override fun encode(input: Char): Char = input
     }
 
     class RunningKey : Programme() {
-        val mapping = "DMTWSILRUYQNKFEJCAZBPGXOHV"
         override fun encode(input: Char): Char {
-            return mapping[input.toInt() - 'a'.toInt()]
+            return rotor1[input.toInt() - 'a'.toInt()]
+        }
+
+    }
+
+    class SingleRotor : Programme() {
+        var offset=0
+        override fun encode(input: Char): Char {
+            return rotor1[input.toInt() - 'a'.toInt()+(offset++)%26]
         }
 
     }

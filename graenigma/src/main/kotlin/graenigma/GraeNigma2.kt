@@ -15,11 +15,11 @@ import javax.swing.text.DocumentFilter
 
 
 fun main() {
-    val frame = Graenigma()
+    val frame = GraeNigma()
     frame.isVisible = true
 }
 
-class Graenigma : JFrame() {
+class GraeNigma : JFrame() {
 
     val encoder = Encoder()
 
@@ -40,14 +40,12 @@ class Graenigma : JFrame() {
         val output = JTextArea()
         val outputPane = JScrollPane(output)
         outputPane.bounds = Rectangle(200, 400, 400, 120)
-        val currentText = ""
 
         val inputChangedListener = object : KeyListener {
             override fun keyTyped(e: KeyEvent) {
                 if (('a'.toInt()..'z'.toInt()).contains(e.keyChar.toInt())) {
                     output.text = output.text + encoder.encode(e.keyChar)
                 }
-//                else input.text=input.text.substring(0,input.text.length-1)//grrr
             }
 
             override fun keyPressed(e: KeyEvent?) {}
