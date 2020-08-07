@@ -1,6 +1,7 @@
 package greanigma
 
 import graenigma.Encoder
+import graenigma.Programme
 import java.awt.BorderLayout
 import java.awt.Rectangle
 import java.awt.event.KeyEvent
@@ -23,7 +24,7 @@ class Graenigma :JFrame(){
 
     private fun createUI(title: String) {
         this.layout=null
-
+            encoder.load(Programme.TypeWriter())
         setTitle(title)
 
         val input = JTextArea()
